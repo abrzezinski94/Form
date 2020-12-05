@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   decrement,
   increment,
   incrementByAmount,
   incrementAsync,
   selectCount,
-} from './counterSlice';
-import styles from './Counter.module.css';
-
-export function Counter() {
+} from "./formSlice";
+import styles from "./Form.module.less";
+const defaultFormState = Object.freeze({
+  title: "",
+  description: "",
+  category_id: null,
+  paid_event: false,
+  event_fee: null,
+  reward: null,
+  date: "",
+  duration: null,
+  coordinator: null,
+});
+export function Form() {
   const count = useSelector(selectCount);
   const dispatch = useDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
+  const [incrementAmount, setIncrementAmount] = useState("2");
 
   return (
     <div>
@@ -38,7 +48,7 @@ export function Counter() {
           className={styles.textbox}
           aria-label="Set increment amount"
           value={incrementAmount}
-          onChange={e => setIncrementAmount(e.target.value)}
+          onChange={(e) => setIncrementAmount(e.target.value)}
         />
         <button
           className={styles.button}
