@@ -19,7 +19,7 @@ const defaultFormState = Object.freeze({
   duration: null,
   coordinator: null,
 });
-export function Form() {
+const Form = () => {
   const count = useSelector(selectCount);
   const dispatch = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState("2");
@@ -67,4 +67,6 @@ export function Form() {
       </div>
     </div>
   );
-}
+};
+
+export default Form;
