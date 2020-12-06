@@ -12,12 +12,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <>
-          <Switch>
-            <Route exact path="/" component={App} />
-            <Route render={() => <div>No route</div>} />
-          </Switch>
-        </>
+        <App />
       </ConnectedRouter>
     </Provider>
   </React.StrictMode>,

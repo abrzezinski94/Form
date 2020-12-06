@@ -24,6 +24,8 @@ const Form = () => {
   return (
     <div>
       <Section title="About"></Section>
+      <Section title="Coordinator"></Section>
+      <Section title="Whe"></Section>
     </div>
   );
 };
