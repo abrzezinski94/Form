@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Form.less";
-import Section from "../../components/section/Section";
-import FormItem from "../../components/formItem/FormItem";
-import Select from "../../components/select/Select";
+import Section from "../../components/form/section/Section";
+import Radio from "../../components/form/radio/Radio";
+import FormItem from "../../components/form/formItem/FormItem";
+import Select from "../../components/form/select/Select";
 import {
   fetchCategories,
   categoriesSelector,
@@ -51,6 +52,8 @@ const Form = () => {
     duration,
     date,
     time,
+    paid_event,
+    period,
   } = eachEntry;
 
   const inputsClasses = [styles.input].join(" ");
@@ -58,6 +61,10 @@ const Form = () => {
   const maxDescriptionCharacters = 140;
   const handleInputChange = (e) => {
     setEachEntry({ ...eachEntry, [e.target.name]: e.target.value });
+  };
+  const handleIsPaidChange = (e) => {
+    const value = e.target.value === "true";
+    setEachEntry({ ...eachEntry, [e.target.name]: value });
   };
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
@@ -117,20 +124,19 @@ const Form = () => {
           ></Select>
         </FormItem>
         <FormItem label="payment">
-          <div onChange={handleInputChange}>
-            <label style={{ marginRight: "5px" }}>
-              <input
-                type="radio"
-                value={false}
-                name="paid_event"
-                defaultChecked
-              />
-              Free event
-            </label>
-            <label>
-              <input type="radio" value={true} name="paid_event" /> Paid event
-            </label>
-          </div>
+          <Radio
+            currentValue={paid_event}
+            onChange={handleIsPaidChange}
+            name="paid_event"
+            options={[
+              {
+                name: "Free event",
+                value: true,
+                labelStyles: { marginRight: "5px" },
+              },
+              { name: "Paid event", value: false },
+            ]}
+          ></Radio>
         </FormItem>
         <FormItem label="reward">
           <input
@@ -191,36 +197,28 @@ const Form = () => {
       </Section>
       <Section title="When">
         <FormItem label="Starts on" isRequired={true}>
-          {/* <input
+          <input
             style={{ marginRight: "10px", maxWidth: "160px" }}
             type="date"
             className={inputsClasses}
             name="date"
             value={date}
             onChange={handleInputChange}
-          ></input> */}
+          ></input>
           <small>at</small>
-          {/* <input
-            style={{
-              marginLeft: "10px",
-              marginRight: "10px",
-              maxWidth: "90px",
-            }}
-            type="time"
-            className={inputsClasses}
-            name="time"
-            value={time}
+          <Radio
             onChange={handleInputChange}
-          ></input> */}
-          <span onChange={handleInputChange}>
-            <label style={{ marginRight: "5px" }}>
-              <input type="radio" value="AM" name="period" defaultChecked />
-              AM
-            </label>
-            <label>
-              <input type="radio" value="PM" name="period" /> PM
-            </label>
-          </span>
+            name="period"
+            currentValue={period}
+            options={[
+              {
+                name: "AM",
+                value: "AM",
+                labelStyles: { marginRight: "5px" },
+              },
+              { name: "PM", value: "PM" },
+            ]}
+          ></Radio>
         </FormItem>
         <FormItem label="duration">
           <input
