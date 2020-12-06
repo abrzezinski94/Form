@@ -1,0 +1,28 @@
+@label-width: 120px;
+
+.formItem {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  max-width: calc(@label-width + 400px);
+}
+.label {
+  min-width: @label-width;
+  text-transform: uppercase;
+  color: #77828f;
+  font-weight: 600;
+  font-size: 13px;
+}
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.bottom {
+  display: flex;
+  flex-direction: row;
+  padding-left: @label-width;
+  font-size: 11px;
+  color: #77828f;
+  justify-content: space-between;
+}

@@ -3,40 +3,80 @@ import { createSlice } from "@reduxjs/toolkit";
 export const formSlice = createSlice({
   name: "form",
   initialState: {
-    value: 0,
+    isLoading: false,
+    categories: [],
+    coordinators: [],
+    groupedCoordinators: {},
   },
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
+    getCategories: (state) => {
+      state.loading = true;
     },
-    decrement: (state) => {
-      state.value -= 1;
+    getCategoriesSuccess: (state, { payload }) => {
+      state.categories = payload;
+      state.loading = false;
     },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
+    getCategoriesFailure: (state) => {
+      state.loading = false;
+    },
+    getCoordinators: (state) => {
+      state.loading = true;
+    },
+    getCoordinatorsSuccess: (state, { payload }) => {
+      state.coordinators = payload.data;
+      state.groupedCoordinators = payload.groupedCoordinators;
+      state.loading = false;
+    },
+    getCoordinatorsFailure: (state) => {
+      state.loading = false;
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = formSlice.actions;
+export const {
+  getCategories,
+  getCategoriesSuccess,
+  getCategoriesFailure,
+  getCoordinators,
+  getCoordinatorsSuccess,
+  getCoordinatorsFailure,
+} = formSlice.actions;
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-export const incrementAsync = (amount) => (dispatch) => {
-  setTimeout(() => {
-    dispatch(incrementByAmount(amount));
-  }, 1000);
-};
-
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-
-export const selectCount = (state) => state.form.value;
+export const categoriesSelector = (state) => state.form;
 
 export default formSlice.reducer;
+
+export function fetchCategories() {
+  return async (dispatch) => {
+    dispatch(getCategories());
+    try {
+      const response = await fetch(
+        "http://www.mocky.io/v2/5bcdd3942f00002c00c855ba"
+      );
+      const data = await response.json();
+      dispatch(getCategoriesSuccess(data));
+    } catch (error) {
+      dispatch(getCategoriesFailure());
+    }
+  };
+}
+
+export function fetchCoordinators() {
+  return async (dispatch) => {
+    dispatch(getCoordinators());
+    try {
+      const response = await fetch(
+        "http://www.mocky.io/v2/5bcdd7992f00006300c855d5"
+      );
+      const data = await response.json();
+      const randomMeIdx = Math.floor(Math.random() * data.length);
+      const groupedCoordinators = {
+        Me: [data[randomMeIdx]],
+        Other: [...data.filter((x, idx) => idx !== randomMeIdx)],
+      };
+      dispatch(getCoordinatorsSuccess({ data, groupedCoordinators }));
+    } catch (error) {
+      dispatch(getCoordinatorsFailure());
+    }
+  };
+}

@@ -4,7 +4,6 @@ import "./index.less";
 import App from "./App";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import { Route, Switch } from "react-router"; // react-router v4/v5
 import { ConnectedRouter } from "connected-react-router";
 import configureStore, { history } from "./configureStore";
 const store = configureStore();
