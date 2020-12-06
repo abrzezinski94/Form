@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "./features/form/Form";
-import Nav from "./features/nav/nav";
+import Nav from "./components/nav/Nav";
 import "./App.less";
 
 function App() {

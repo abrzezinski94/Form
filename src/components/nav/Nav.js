@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./nav.less";
+import styles from "./Nav.less";
 const Nav = () => {
   return (
     <div className={styles.nav}>
