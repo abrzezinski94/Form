@@ -5,6 +5,7 @@ import Section from "../../components/form/section/Section";
 import Radio from "../../components/form/radio/Radio";
 import FormItem from "../../components/form/formItem/FormItem";
 import Select from "../../components/form/select/Select";
+import TimeInput from "../../components/form/timeInput/TimeInput";
 import {
   fetchCategories,
   categoriesSelector,
@@ -206,6 +207,12 @@ const Form = () => {
             onChange={handleInputChange}
           ></input>
           <small>at</small>
+          <TimeInput
+            onChange={(val) => {
+              console.log(val);
+            }}
+            style={{ marginLeft: "10px", marginRight: "10px" }}
+          ></TimeInput>
           <Radio
             onChange={handleInputChange}
             name="period"
