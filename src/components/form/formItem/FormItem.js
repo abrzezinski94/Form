@@ -6,6 +6,7 @@ const FormItem = ({
   isRequired = false,
   bottomTextLeft = "",
   bottomTextRight = "",
+  invalidInputText = "",
 }) => {
   return (
     <div className={styles.formItem}>
@@ -14,6 +15,9 @@ const FormItem = ({
           {label} {isRequired ? "*" : null}
         </label>
         {children}
+        {invalidInputText ? (
+          <div className={styles.invalidInputText}>{invalidInputText}</div>
+        ) : null}
       </div>
       {bottomTextLeft || bottomTextRight ? (
         <div className={styles.bottom}>

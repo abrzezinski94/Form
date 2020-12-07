@@ -4,7 +4,8 @@
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  max-width: calc(@label-width + 400px);
+  max-width: 100%;
+  position: relative;
 }
 .label {
   min-width: @label-width;
@@ -19,10 +20,32 @@
   align-items: center;
 }
 .bottom {
+  max-width: 400px;
   display: flex;
   flex-direction: row;
   padding-left: @label-width;
   font-size: 11px;
   color: #77828f;
   justify-content: space-between;
+}
+.invalidInputText {
+  background: #dc3545;
+  color: white;
+  padding: 3px 6px;
+  white-space: nowrap;
+  right: -15px;
+  position: relative;
+  font-size: 12px;
+  &:before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 0;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #dc3545;
+  }
 }

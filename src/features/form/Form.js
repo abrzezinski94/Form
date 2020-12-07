@@ -11,6 +11,7 @@ import {
   categoriesSelector,
   fetchCoordinators,
 } from "./formSlice";
+import moment from "moment";
 
 const defaultCoordinator = Object.freeze({
   id: "",
@@ -42,6 +43,7 @@ const Form = () => {
     coordinators,
     groupedCoordinators,
   } = useSelector(categoriesSelector);
+  const [invalidFields, setInvalidFields] = useState({});
   const [eachEntry, setEachEntry] = useState(defaultFormState);
   const [isCoordiatorSelectBlured, setCoordiatorIsBlured] = useState(false);
   const {
@@ -84,17 +86,98 @@ const Form = () => {
     setEachEntry({ ...eachEntry, coordinator: value });
   };
   const handleTimeChange = (val) => {
-    console.log(val);
     setEachEntry({ ...eachEntry, time: val });
+  };
+  const validateFields = () => {
+    let invalidFields = {};
+    let isValid = false;
+    setInvalidFields(invalidFields);
+    const required = [
+      {
+        key: "title",
+        isInvalid: (val) => {
+          if (val === "") {
+            return "Title cannot be empty";
+          }
+          return false;
+        },
+      },
+      {
+        key: "description",
+        isInvalid: (val) => {
+          if (val === "") {
+            return "Description cannot be empty";
+          }
+          return false;
+        },
+      },
+      {
+        key: "date",
+        isInvalid: (val) => {
+          if (val === "") {
+            return "Date cannot be empty";
+          }
+          if (!moment(val).isValid()) {
+            return "Date is invalid";
+          }
+          return false;
+        },
+      },
+      {
+        key: "time",
+        isInvalid: (val) => {
+          if (val === "") {
+            return "Time cannot be empty";
+          }
+          return false;
+        },
+      },
+      {
+        key: "coordinator",
+        isInvalid: (val) => {
+          if (val?.id === "") {
+            return "Coordinator must be selected";
+          }
+          return false;
+        },
+      },
+    ];
+    if (paid_event) {
+      required.push({
+        key: "event_fee",
+        isInvalid: (val) => {
+          if (val === "") {
+            return "Fee cannot be empty";
+          }
+          return false;
+        },
+      });
+    }
+    for (let validator of required) {
+      const invalidField = validator.isInvalid(eachEntry[validator.key]);
+      if (invalidField) {
+        invalidFields[validator.key] = invalidField;
+      }
+    }
+    setInvalidFields(invalidFields);
+    isValid = Object.keys(invalidFields).length;
+    return isValid ? false : true;
   };
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log(eachEntry);
+    const isValid = validateFields();
+    if (!isValid) {
+      return;
+    }
   };
   return (
     <form onSubmit={handleSubmit}>
       <Section title="About">
-        <FormItem label="title" isRequired={true}>
+        <FormItem
+          label="title"
+          isRequired={true}
+          invalidInputText={invalidFields.title}
+        >
           <input
             name="title"
             className={inputsClasses}
@@ -105,6 +188,7 @@ const Form = () => {
           ></input>
         </FormItem>
         <FormItem
+          invalidInputText={invalidFields.description}
           label="description"
           isRequired={true}
           bottomTextLeft={"Limit of characters"}
@@ -128,7 +212,11 @@ const Form = () => {
             options={categories}
           ></Select>
         </FormItem>
-        <FormItem label="payment" isRequired={paid_event === true}>
+        <FormItem
+          label="payment"
+          isRequired={paid_event === true}
+          invalidInputText={invalidFields["event_fee"]}
+        >
           <Radio
             currentValue={paid_event}
             onChange={handleIsPaidChange}
@@ -171,7 +259,11 @@ const Form = () => {
         </FormItem>
       </Section>
       <Section title="Coordinator">
-        <FormItem label="responsible" isRequired={true}>
+        <FormItem
+          label="responsible"
+          invalidInputText={invalidFields.coordinator}
+          isRequired={true}
+        >
           <Select
             name="coordinator"
             className={[inputsClasses, styles.select].join(" ")}
@@ -214,7 +306,11 @@ const Form = () => {
         </FormItem>
       </Section>
       <Section title="When">
-        <FormItem label="Starts on" isRequired={true}>
+        <FormItem
+          label="Starts on"
+          isRequired={true}
+          invalidInputText={invalidFields.date || invalidFields.time}
+        >
           <input
             style={{ marginRight: "10px", maxWidth: "160px" }}
             type="date"
