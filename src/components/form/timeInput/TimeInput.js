@@ -44,8 +44,9 @@ const TimeInput = ({ onChange, style }) => {
     if (hour.length === 2) {
       skipToMinutes();
     }
-  }, [hour, minuteInput]);
+  }, [hour]);
   useEffect(() => {
+    console.log("call");
     if (hour.length === 2 && minutes.length === 2) {
       if (onChange) {
         onChange(`${hour}:${minutes}`);
@@ -53,7 +54,7 @@ const TimeInput = ({ onChange, style }) => {
     } else {
       onChange("");
     }
-  }, [hour, minutes, onChange]);
+  }, [hour, minutes]);
   return (
     <div className={styles.timeInput} style={style} name="time">
       <input

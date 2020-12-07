@@ -56,10 +56,10 @@ const Form = () => {
     paid_event,
     period,
   } = eachEntry;
-
   const inputsClasses = [styles.input].join(" ");
   const descriptionCharacters = description.length;
   const maxDescriptionCharacters = 140;
+
   const handleInputChange = (e) => {
     setEachEntry({ ...eachEntry, [e.target.name]: e.target.value });
   };
@@ -82,6 +82,10 @@ const Form = () => {
       : defaultCoordinator;
     setCoordiatorIsBlured(false);
     setEachEntry({ ...eachEntry, coordinator: value });
+  };
+  const handleTimeChange = (val) => {
+    console.log(val);
+    setEachEntry({ ...eachEntry, time: val });
   };
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -208,9 +212,7 @@ const Form = () => {
           ></input>
           <small>at</small>
           <TimeInput
-            onChange={(val) => {
-              console.log(val);
-            }}
+            onChange={handleTimeChange}
             style={{ marginLeft: "10px", marginRight: "10px" }}
           ></TimeInput>
           <Radio
