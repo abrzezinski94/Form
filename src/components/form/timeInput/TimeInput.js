@@ -17,9 +17,6 @@ const TimeInput = ({ onChange, style }) => {
       setHour(val);
     }
   };
-  const skipToMinutes = () => {
-    minuteInput.focus();
-  };
   const handleSetMinutes = (e) => {
     const val = e.target.value;
     const re = /([0-5])/;
@@ -41,10 +38,13 @@ const TimeInput = ({ onChange, style }) => {
   };
 
   useEffect(() => {
+    const skipToMinutes = () => {
+      minuteInput.focus();
+    };
     if (hour.length === 2) {
       skipToMinutes();
     }
-  }, [hour, skipToMinutes]);
+  }, [hour, minuteInput]);
   useEffect(() => {
     if (hour.length === 2 && minutes.length === 2) {
       if (onChange) {
