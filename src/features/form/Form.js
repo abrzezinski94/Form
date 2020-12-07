@@ -5,11 +5,14 @@ import Section from "../../components/form/section/Section";
 import Radio from "../../components/form/radio/Radio";
 import FormItem from "../../components/form/formItem/FormItem";
 import Select from "../../components/form/select/Select";
+import Input from "../../components/form/input/Input";
+import Textarea from "../../components/form/textarea/Textarea";
 import TimeInput from "../../components/form/timeInput/TimeInput";
 import {
   fetchCategories,
   categoriesSelector,
   fetchCoordinators,
+  submit,
 } from "./formSlice";
 import moment from "moment";
 
@@ -166,9 +169,11 @@ const Form = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const isValid = validateFields();
+    console.log(isValid);
     if (!isValid) {
       return;
     }
+    dispatch(submit(eachEntry));
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -178,14 +183,15 @@ const Form = () => {
           isRequired={true}
           invalidInputText={invalidFields.title}
         >
-          <input
+          <Input
+            isInvalid={invalidFields.title}
             name="title"
             className={inputsClasses}
             type="text"
             placeholder="Make it short and clear"
             value={title}
             onChange={handleInputChange}
-          ></input>
+          ></Input>
         </FormItem>
         <FormItem
           invalidInputText={invalidFields.description}
@@ -194,13 +200,14 @@ const Form = () => {
           bottomTextLeft={"Limit of characters"}
           bottomTextRight={`${descriptionCharacters}/${maxDescriptionCharacters}`}
         >
-          <textarea
+          <Textarea
             name="description"
             className={[inputsClasses, styles.descriptionInput].join(" ")}
             placeholder="Write about your event, be creative"
             value={description}
+            isInvalid={invalidFields.description}
             onChange={handleDescriptionChange}
-          ></textarea>
+          ></Textarea>
         </FormItem>
         <FormItem label="category" bottomTextLeft={`Select category from list`}>
           <Select
@@ -232,7 +239,8 @@ const Form = () => {
           ></Radio>
           {paid_event ? (
             <>
-              <input
+              <Input
+                isInvalid={invalidFields["event_fee"]}
                 style={{ maxWidth: "60px", margin: "0 5px 0 10px" }}
                 name="event_fee"
                 className={inputsClasses}
@@ -240,13 +248,13 @@ const Form = () => {
                 placeholder="Fee"
                 value={event_fee}
                 onChange={handleInputChange}
-              ></input>
+              ></Input>
               <small>$</small>{" "}
             </>
           ) : null}
         </FormItem>
         <FormItem label="reward">
-          <input
+          <Input
             style={{ maxWidth: "80px", marginRight: "10px" }}
             name="reward"
             className={inputsClasses}
@@ -254,7 +262,7 @@ const Form = () => {
             placeholder="Number"
             value={reward}
             onChange={handleInputChange}
-          ></input>
+          ></Input>
           <small>reward points for attendance</small>
         </FormItem>
       </Section>
@@ -265,6 +273,7 @@ const Form = () => {
           isRequired={true}
         >
           <Select
+            isInvalid={invalidFields.coordinator}
             name="coordinator"
             className={[inputsClasses, styles.select].join(" ")}
             value={coordinator.id}
@@ -295,14 +304,14 @@ const Form = () => {
         </FormItem>
         <FormItem label="email">
           {/* idk if we should get email from coordiatiors object and disable it or let someone edit no info about that*/}
-          <input
+          <Input
             name="email"
             className={inputsClasses}
             type="text"
             disabled={true}
             placeholder="Email"
             value={coordinator.email}
-          ></input>
+          ></Input>
         </FormItem>
       </Section>
       <Section title="When">
@@ -311,16 +320,18 @@ const Form = () => {
           isRequired={true}
           invalidInputText={invalidFields.date || invalidFields.time}
         >
-          <input
+          <Input
+            isInvalid={invalidFields.date}
             style={{ marginRight: "10px", maxWidth: "160px" }}
             type="date"
             className={inputsClasses}
             name="date"
             value={date}
             onChange={handleInputChange}
-          ></input>
+          ></Input>
           <small>at</small>
           <TimeInput
+            isInvalid={invalidFields.time}
             onChange={handleTimeChange}
             style={{ marginLeft: "10px", marginRight: "10px" }}
           ></TimeInput>
@@ -339,7 +350,7 @@ const Form = () => {
           ></Radio>
         </FormItem>
         <FormItem label="duration">
-          <input
+          <Input
             style={{ maxWidth: "80px", marginRight: "10px" }}
             name="duration"
             className={inputsClasses}
@@ -347,7 +358,7 @@ const Form = () => {
             placeholder="Number"
             value={duration}
             onChange={handleInputChange}
-          ></input>
+          ></Input>
           <small>hour</small>
         </FormItem>
       </Section>

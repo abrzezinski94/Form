@@ -80,3 +80,20 @@ export function fetchCoordinators() {
     }
   };
 }
+
+export function submit(payload) {
+  return async (dispatch) => {
+    const categoryId = payload["category_id"];
+    const data = {
+      title: payload.title,
+      description: payload.description,
+      category_id: categoryId ? parseInt(categoryId) : "",
+      paid_event: payload["paid_event"],
+      event_fee: Number(payload["event_fee"]),
+      reward: Number(payload.reward),
+      duration: Number(payload.duration) * 3600,
+      coordinator: payload.coordinator,
+    };
+    console.log(data);
+  };
+}

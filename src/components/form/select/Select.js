@@ -1,11 +1,13 @@
 import React from "react";
 import styles from "../select/Select.less";
+import appStyles from "../../../App.less";
 const Select = ({
   options,
   children,
   placeholder,
   value,
   className,
+  isInvalid = false,
   ...props
 }) => {
   const classes =
@@ -13,7 +15,10 @@ const Select = ({
       ? `${className} ${styles.selectPlaceholder}`
       : className;
   return (
-    <select className={classes} {...props}>
+    <select
+      className={[classes, isInvalid ? appStyles.invalid : ""].join(" ")}
+      {...props}
+    >
       <>
         <option value="" disabled={value !== ""}>
           {placeholder}
