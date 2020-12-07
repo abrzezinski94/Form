@@ -169,7 +169,6 @@ const Form = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const isValid = validateFields();
-    console.log(isValid);
     if (!isValid) {
       return;
     }

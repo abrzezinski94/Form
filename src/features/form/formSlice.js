@@ -86,10 +86,10 @@ export function submit(payload) {
   return async (dispatch) => {
     const categoryId = payload["category_id"];
     var time = moment(`${payload.time} ${payload.period}`, ["h:mm A"]).format(
-      "HH:mm"
+      "HH:mm:ss"
     );
     var date = moment(payload.date).format("YYYY-MM-DD");
-    var fullDate = `${date} ${time}:00`;
+    var fullDate = `${date} ${time}`;
     const data = {
       title: payload.title,
       description: payload.description,
