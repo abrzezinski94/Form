@@ -1,19 +1,31 @@
 import React from "react";
-const Select = ({ options, children, ...props }) => {
+import styles from "../select/Select.less";
+const Select = ({
+  options,
+  children,
+  placeholder,
+  value,
+  className,
+  ...props
+}) => {
+  const classes =
+    className && !value
+      ? `${className} ${styles.selectPlaceholder}`
+      : className;
   return (
-    <select {...props}>
-      {children ? (
-        children
-      ) : (
-        <>
-          <option value=""></option>
-          {options.map((x) => (
-            <option key={x.id} value={x.id}>
-              {x.name}
-            </option>
-          ))}
-        </>
-      )}
+    <select className={classes} {...props}>
+      <>
+        <option value="" disabled={value !== ""}>
+          {placeholder}
+        </option>
+        {children
+          ? children
+          : options.map((x) => (
+              <option key={x.id} value={x.id}>
+                {x.name}
+              </option>
+            ))}
+      </>
     </select>
   );
 };

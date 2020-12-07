@@ -52,9 +52,9 @@ const Form = () => {
     coordinator,
     duration,
     date,
-    time,
     paid_event,
     period,
+    event_fee,
   } = eachEntry;
   const inputsClasses = [styles.input].join(" ");
   const descriptionCharacters = description.length;
@@ -65,7 +65,7 @@ const Form = () => {
   };
   const handleIsPaidChange = (e) => {
     const value = e.target.value === "true";
-    setEachEntry({ ...eachEntry, [e.target.name]: value });
+    setEachEntry({ ...eachEntry, [e.target.name]: value, event_fee: "" });
   };
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
@@ -118,7 +118,7 @@ const Form = () => {
             onChange={handleDescriptionChange}
           ></textarea>
         </FormItem>
-        <FormItem label="category">
+        <FormItem label="category" bottomTextLeft={`Select category from list`}>
           <Select
             name="category_id"
             className={inputsClasses}
@@ -128,7 +128,7 @@ const Form = () => {
             options={categories}
           ></Select>
         </FormItem>
-        <FormItem label="payment">
+        <FormItem label="payment" isRequired={paid_event === true}>
           <Radio
             currentValue={paid_event}
             onChange={handleIsPaidChange}
@@ -136,12 +136,26 @@ const Form = () => {
             options={[
               {
                 name: "Free event",
-                value: true,
+                value: false,
                 labelStyles: { marginRight: "5px" },
               },
-              { name: "Paid event", value: false },
+              { name: "Paid event", value: true },
             ]}
           ></Radio>
+          {paid_event ? (
+            <>
+              <input
+                style={{ maxWidth: "60px", margin: "0 5px 0 10px" }}
+                name="event_fee"
+                className={inputsClasses}
+                type="number"
+                placeholder="Fee"
+                value={event_fee}
+                onChange={handleInputChange}
+              ></input>
+              <small>$</small>{" "}
+            </>
+          ) : null}
         </FormItem>
         <FormItem label="reward">
           <input
@@ -161,15 +175,14 @@ const Form = () => {
           <Select
             name="coordinator"
             className={[inputsClasses, styles.select].join(" ")}
-            placeholder="Select category"
             value={coordinator.id}
             onChange={handleCoordinatorChange}
             options={coordinators}
+            placeholder="Select coordinator"
             onBlur={() => setCoordiatorIsBlured(false)}
             onFocus={() => setCoordiatorIsBlured(true)}
           >
             <>
-              <option value=""></option>
               {Object.keys(groupedCoordinators).map((key) => (
                 <optgroup label={key} key={key}>
                   {groupedCoordinators[key].map((x) => (

@@ -36,7 +36,6 @@ const TimeInput = ({ onChange, style }) => {
       setMinutes(`0${minutes}`);
     }
   };
-
   useEffect(() => {
     const skipToMinutes = () => {
       minuteInput.focus();
@@ -46,7 +45,6 @@ const TimeInput = ({ onChange, style }) => {
     }
   }, [hour]);
   useEffect(() => {
-    console.log("call");
     if (hour.length === 2 && minutes.length === 2) {
       if (onChange) {
         onChange(`${hour}:${minutes}`);
