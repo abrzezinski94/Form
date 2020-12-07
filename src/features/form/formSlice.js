@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import moment from "moment";
 
 export const formSlice = createSlice({
   name: "form",
@@ -84,13 +85,19 @@ export function fetchCoordinators() {
 export function submit(payload) {
   return async (dispatch) => {
     const categoryId = payload["category_id"];
+    var time = moment(`${payload.time} ${payload.period}`, ["h:mm A"]).format(
+      "HH:mm"
+    );
+    var date = moment(payload.date).format("YYYY-MM-DD");
+    var fullDate = `${date} ${time}:00`;
     const data = {
       title: payload.title,
       description: payload.description,
-      category_id: categoryId ? parseInt(categoryId) : "",
+      category_id: categoryId ? parseInt(categoryId) : null,
       paid_event: payload["paid_event"],
       event_fee: Number(payload["event_fee"]),
       reward: Number(payload.reward),
+      date: moment(fullDate).format("YYYY-MM-DDTHH:mm"),
       duration: Number(payload.duration) * 3600,
       coordinator: payload.coordinator,
     };
