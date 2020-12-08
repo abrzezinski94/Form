@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TimeInput.less";
 import appStyles from "../../../App.less";
-const TimeInput = ({ onChange, style, isInvalid = false }) => {
+const TimeInput = ({ onChange, style, isInvalid = false, className }) => {
   let minuteInput = null;
   const [hour, setHour] = useState("");
   const [minutes, setMinutes] = useState("");
@@ -56,9 +56,11 @@ const TimeInput = ({ onChange, style, isInvalid = false }) => {
   }, [hour, minutes]);
   return (
     <div
-      className={[styles.timeInput, isInvalid ? appStyles.invalid : ""].join(
-        " "
-      )}
+      className={[
+        styles.timeInput,
+        isInvalid ? appStyles.invalid : "",
+        className,
+      ].join(" ")}
       style={style}
       name="time"
     >

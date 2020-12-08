@@ -49,3 +49,23 @@
     border-right: 10px solid #dc3545;
   }
 }
+@media (max-width: 992px) {
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .label {
+    width: 100%;
+  }
+  .bottom {
+    max-width: 100%;
+    padding-left: 0;
+  }
+  .invalidInputText {
+    margin-top: 5px;
+    left: 0;
+    &:before {
+      display: none;
+    }
+  }
+}

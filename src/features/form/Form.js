@@ -40,12 +40,9 @@ const Form = () => {
     dispatch(fetchCategories());
     dispatch(fetchCoordinators());
   }, [dispatch]);
-  const {
-    categories,
-    loading,
-    coordinators,
-    groupedCoordinators,
-  } = useSelector(categoriesSelector);
+  const { categories, coordinators, groupedCoordinators } = useSelector(
+    categoriesSelector
+  );
   const [invalidFields, setInvalidFields] = useState({});
   const [eachEntry, setEachEntry] = useState(defaultFormState);
   const [isCoordiatorSelectBlured, setCoordiatorIsBlured] = useState(false);
@@ -237,32 +234,33 @@ const Form = () => {
             ]}
           ></Radio>
           {paid_event ? (
-            <>
+            <div>
               <Input
                 isInvalid={invalidFields["event_fee"]}
-                style={{ maxWidth: "60px", margin: "0 5px 0 10px" }}
                 name="event_fee"
-                className={inputsClasses}
+                className={[inputsClasses, styles.inputFee].join(" ")}
                 type="number"
                 placeholder="Fee"
                 value={event_fee}
                 onChange={handleInputChange}
               ></Input>
               <small>$</small>{" "}
-            </>
+            </div>
           ) : null}
         </FormItem>
         <FormItem label="reward">
-          <Input
-            style={{ maxWidth: "80px", marginRight: "10px" }}
-            name="reward"
-            className={inputsClasses}
-            type="number"
-            placeholder="Number"
-            value={reward}
-            onChange={handleInputChange}
-          ></Input>
-          <small>reward points for attendance</small>
+          <div>
+            <Input
+              style={{ maxWidth: "80px", marginRight: "10px" }}
+              name="reward"
+              className={inputsClasses}
+              type="number"
+              placeholder="Number"
+              value={reward}
+              onChange={handleInputChange}
+            ></Input>
+            <small>reward points for attendance</small>
+          </div>
         </FormItem>
       </Section>
       <Section title="Coordinator">
@@ -332,7 +330,7 @@ const Form = () => {
           <TimeInput
             isInvalid={invalidFields.time}
             onChange={handleTimeChange}
-            style={{ marginLeft: "10px", marginRight: "10px" }}
+            className={styles.inputTime}
           ></TimeInput>
           <Radio
             onChange={handleInputChange}
@@ -349,16 +347,18 @@ const Form = () => {
           ></Radio>
         </FormItem>
         <FormItem label="duration">
-          <Input
-            style={{ maxWidth: "80px", marginRight: "10px" }}
-            name="duration"
-            className={inputsClasses}
-            type="number"
-            placeholder="Number"
-            value={duration}
-            onChange={handleInputChange}
-          ></Input>
-          <small>hour</small>
+          <div>
+            <Input
+              style={{ maxWidth: "80px", marginRight: "10px" }}
+              name="duration"
+              className={inputsClasses}
+              type="number"
+              placeholder="Number"
+              value={duration}
+              onChange={handleInputChange}
+            ></Input>
+            <small>hour</small>
+          </div>
         </FormItem>
       </Section>
       <div>
