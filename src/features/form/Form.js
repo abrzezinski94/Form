@@ -63,11 +63,14 @@ const Form = () => {
   const maxDescriptionCharacters = 140;
 
   const handleInputChange = (e) => {
-    setEachEntry({ ...eachEntry, [e.target.name]: e.target.value });
+    const key = e.target.name;
+    const val = e.target.value;
+    setEachEntry({ ...eachEntry, [key]: val });
   };
   const handleIsPaidChange = (e) => {
+    const key = e.target.name;
     const value = e.target.value === "true";
-    setEachEntry({ ...eachEntry, [e.target.name]: value, event_fee: "" });
+    setEachEntry({ ...eachEntry, [key]: value, event_fee: "" });
   };
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
@@ -88,6 +91,12 @@ const Form = () => {
   const handleTimeChange = (val) => {
     setEachEntry({ ...eachEntry, time: val });
   };
+  const validateIsEmpty = (val, key) => {
+    if (val === "") {
+      return `${key} cannot be empty`;
+    }
+    return false;
+  };
   const validateFields = () => {
     let invalidFields = {};
     let isValid = false;
@@ -95,21 +104,11 @@ const Form = () => {
     const required = [
       {
         key: "title",
-        isInvalid: (val) => {
-          if (val === "") {
-            return "Title cannot be empty";
-          }
-          return false;
-        },
+        isInvalid: (val) => validateIsEmpty(val, "Title"),
       },
       {
         key: "description",
-        isInvalid: (val) => {
-          if (val === "") {
-            return "Description cannot be empty";
-          }
-          return false;
-        },
+        isInvalid: (val) => validateIsEmpty(val, "Description"),
       },
       {
         key: "date",
@@ -125,12 +124,7 @@ const Form = () => {
       },
       {
         key: "time",
-        isInvalid: (val) => {
-          if (val === "") {
-            return "Time cannot be empty";
-          }
-          return false;
-        },
+        isInvalid: (val) => validateIsEmpty(val, "Time"),
       },
       {
         key: "coordinator",
@@ -145,12 +139,7 @@ const Form = () => {
     if (paid_event) {
       required.push({
         key: "event_fee",
-        isInvalid: (val) => {
-          if (val === "") {
-            return "Fee cannot be empty";
-          }
-          return false;
-        },
+        isInvalid: (val) => validateIsEmpty(val, "Fee"),
       });
     }
     for (let validator of required) {
